@@ -16,4 +16,7 @@ def userSignupView(request):
         form = UserSignupForm()
         return render(request , 'core/SignUp.html' , {'form' : form})
 
+def tempFile(request):
+    return render(request , "core/temp.html")
+
 
