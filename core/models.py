@@ -32,13 +32,23 @@ class User(AbstractBaseUser):
     def has_module_perms(self, app_label):
         return self.is_admin
     
+    firstname = models.CharField(max_length=100)
+    lastname = models.CharField(max_length=100)
+    phone = models.CharField(max_length=10 , null=True, blank=True)
+    
     email = models.EmailField(unique=True)
     role_choice = (
         ('admin' , 'admin'),
         ('user' , 'user')
     )
-
     role = models.CharField(max_length=10 , choices=role_choice ,default='user')
+
+    gender_choice = (
+        ('male' , 'male'),
+        ('female' , 'female')
+    )
+    gender = models.CharField(max_length=100 , choices=gender_choice ,default='male')
+
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)

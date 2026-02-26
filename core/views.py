@@ -41,7 +41,5 @@ def userLoginView(request):
 def tempFile(request):
     return render(request , "core/temp.html")
 
-def adminPanel(request):
-    return render(request , 'core/admin.html')
 
 
