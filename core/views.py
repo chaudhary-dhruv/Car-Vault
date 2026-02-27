@@ -2,6 +2,8 @@ from django.shortcuts import render , redirect
 from django.contrib.auth import authenticate,login
 from .forms import UserSignupForm , UserLoginForm
 from .models import User
+from django.conf import settings
+from django.core.mail import send_mail
 
 # Create your views here.
 
@@ -9,8 +11,16 @@ def userSignupView(request):
     if request.method == "POST":
         form = UserSignupForm(request.POST or None)
         if form.is_valid():
+            email = form.cleaned_data['email']
+            send_mail(
+                subject="Welcome to Car Vault",
+                message="Thank you for registering with car vault",
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=[email]
+            )
+            
             form.save()
-            return redirect('login')  # it throw error bcz login was not exist now
+            return redirect('login') 
         else:
             return render(request , 'core/SignUp.html' , {'form' : form})
     else:
@@ -41,5 +51,5 @@ def userLoginView(request):
 def tempFile(request):
     return render(request , "core/temp.html")
 
-
+ 
 
