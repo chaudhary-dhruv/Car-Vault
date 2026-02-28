@@ -14,7 +14,7 @@ def userSignupView(request):
             email = form.cleaned_data['email']
             send_mail(
                 subject="Welcome to Car Vault",
-                message="Thank you for registering with car vault",
+                message="Thank you for registering with car vault .",
                 from_email=settings.EMAIL_HOST_USER,
                 recipient_list=[email]
             )
