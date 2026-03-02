@@ -4,29 +4,70 @@ from .forms import UserSignupForm , UserLoginForm
 from .models import User
 from django.conf import settings
 from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+import os
+
 
 # Create your views here.
 
 def userSignupView(request):
     if request.method == "POST":
-        form = UserSignupForm(request.POST or None)
+        form = UserSignupForm(request.POST)
+
         if form.is_valid():
-            email = form.cleaned_data['email']
-            send_mail(
-                subject="Welcome to Car Vault",
-                message="Thank you for registering with car vault",
-                from_email=settings.EMAIL_HOST_USER,
-                recipient_list=[email]
-            )
-            
-            form.save()
-            return redirect('login') 
-        else:
-            return render(request , 'core/SignUp.html' , {'form' : form})
+            # Save user first
+            user = form.save()
+
+            # Send email AFTER successful save
+            send_welcome_email(user)
+
+            return redirect('login')
+
+        return render(request, 'core/SignUp.html', {'form': form})
+
     else:
         form = UserSignupForm()
-        return render(request , 'core/SignUp.html' , {'form' : form})
-    
+        return render(request, 'core/SignUp.html', {'form': form})
+
+def send_welcome_email(user):
+
+    subject = "Welcome to Car Vault 🚗"
+    from_email = settings.EMAIL_HOST_USER
+    to_email = [user.email]
+
+    # Render HTML template
+    html_content = render_to_string(
+        "email/welcome_email.html",
+        {"user": user}
+    )
+
+    # Plain text fallback
+    text_content = f'''
+    Hi {user.firstname},
+
+    Thank you for registering with Car Vault.
+    Start comparing cars today!
+    '''
+
+    email = EmailMultiAlternatives(
+        subject,
+        text_content,
+        from_email,
+        to_email
+    )
+
+    # Attach HTML version
+    email.attach_alternative(html_content, "text/html")
+
+    # Optional: Attach PDF file
+    file_path = os.path.join(settings.BASE_DIR, "static", "files", "welcome_file.pdf")
+
+    if os.path.exists(file_path):
+        email.attach_file(file_path)
+
+    email.send()
+
 
 def userLoginView(request):
     if request.method == "POST":
