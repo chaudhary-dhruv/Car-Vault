@@ -45,7 +45,8 @@ class User(AbstractBaseUser):
 
     gender_choice = (
         ('male' , 'male'),
-        ('female' , 'female')
+        ('female' , 'female'),
+        ('other' ,'other')
     )
     gender = models.CharField(max_length=100 , choices=gender_choice ,default='male')
 

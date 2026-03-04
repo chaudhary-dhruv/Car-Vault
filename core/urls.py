@@ -6,5 +6,6 @@ urlpatterns = [
 
     path('signUp/' , views.userSignupView, name='signUp'),
     path('temp/' , views.tempFile , name='temp'),    
-    path('login/' , views.userLoginView , name='login')
+    path('login/' , views.userLoginView , name='login'),
+    path('try/' , views.TryHTML)
 ]

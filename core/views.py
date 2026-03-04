@@ -94,3 +94,5 @@ def tempFile(request):
 
  
 
+def TryHTML(request):
+    return render(request , "core/try_html.html")
