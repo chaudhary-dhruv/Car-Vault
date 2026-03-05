@@ -1,5 +1,205 @@
-<form method="post">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button type="submit">LogIn</button>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login | Automotive Portfolio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#e63743",
+                    "background-light": "#f8f6f6",
+                    "background-dark": "#211112",
+                },
+                fontFamily: {
+                    "display": ["Inter", "sans-serif"]
+                },
+                borderRadius: {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+                },
+            },
+        },
+    }
+</script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
+<div class="relative flex min-h-screen w-full overflow-x-hidden">
+
+  <!-- Left Side: Image Content -->
+  <div class="hidden lg:flex lg:w-1/2 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-t from-background-dark/80 to-transparent z-10"></div>
+    <div class="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-700 hover:scale-105"
+      style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC20LGZmYHbR7I3a38Iyic_dAuxw3IwrjU-gMDd0DZG6IhPrdnOZlgwJeQxuzM6kxLv4kz3Sib9PvVL5br_dPMuBN4zdAIKXOI8NfzeMbfIboRRi4iSICXlRE_j3dmLLTa2i9xrkzSdkKoGcISoM8rceRkAip_RQGgUbFunOM_qQOcM5ylFU3gIHmXTY6vOphvbbV8lMnKG2yq8l645UhcC6-3wut_82fKLClAZCccJdfDqrr4Jp8XFGiuq4HQy7VEdlbZoWcvUiDE");'>
+    </div>
+    <div class="absolute bottom-12 left-12 z-20 max-w-md">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="material-symbols-outlined text-primary text-4xl">directions_car</span>
+        <span class="text-white text-2xl font-black tracking-tight">CARVAULT</span>
+      </div>
+      <h1 class="text-white text-5xl font-black leading-tight tracking-tight mb-4">Master your automotive portfolio.</h1>
+      <p class="text-slate-300 text-lg">The professional suite for high-end vehicle management and performance tracking.</p>
+    </div>
+  </div>
+
+  <!-- Right Side: Login Form -->
+  <div class="flex flex-1 flex-col justify-center px-6 py-12 lg:px-24 bg-background-light dark:bg-background-dark">
+    <div class="mx-auto w-full max-w-sm">
+
+      <!-- Mobile Header -->
+      <div class="lg:hidden flex items-center gap-2 mb-8">
+        <span class="material-symbols-outlined text-primary text-3xl">directions_car</span>
+        <span class="text-slate-900 dark:text-slate-100 text-xl font-black tracking-tight">AUTOCORE</span>
+      </div>
+
+      <div class="flex flex-col gap-2 mb-10">
+        <h2 class="text-slate-900 dark:text-slate-100 text-3xl font-extrabold tracking-tight">Welcome Back</h2>
+        <p class="text-slate-500 dark:text-slate-400 text-base">Enter your credentials to access your garage.</p>
+      </div>
+
+      <!-- Non-field errors / invalid credentials -->
+      {% if form.non_field_errors %}
+        <div class="mb-5 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-3">
+          {% for error in form.non_field_errors %}
+            <p class="text-sm text-red-600 dark:text-red-400">{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <!-- Invalid credentials error (when authenticate() returns None) -->
+      {% if form.errors and not form.non_field_errors %}
+        <div class="mb-5 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-3">
+          <p class="text-sm text-red-600 dark:text-red-400">Invalid email or password. Please try again.</p>
+        </div>
+      {% endif %}
+
+      <form action="{% url 'login' %}" class="space-y-5" method="POST">
+        {% csrf_token %}
+
+        <!-- Email Field -->
+        <div class="flex flex-col gap-2">
+          <label class="text-slate-700 dark:text-slate-300 text-sm font-semibold" for="{{ form.email.id_for_label }}">
+            Email Address
+          </label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">mail</span>
+            <input
+              class="flex w-full rounded-lg border {% if form.email.errors %}border-red-400{% else %}border-slate-200 dark:border-slate-800{% endif %} bg-white dark:bg-slate-900/50 px-10 py-3 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+              id="{{ form.email.id_for_label }}"
+              name="email"
+              value="{{ form.email.value|default:'' }}"
+              placeholder="name@company.com"
+              required
+              type="email"
+            />
+          </div>
+          {% for error in form.email.errors %}
+            <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+          {% endfor %}
+        </div>
+
+        <!-- Password Field -->
+        <div class="flex flex-col gap-2">
+          <div class="flex justify-between items-center">
+            <label class="text-slate-700 dark:text-slate-300 text-sm font-semibold" for="{{ form.password.id_for_label }}">
+              Password
+            </label>
+            <a class="text-primary text-xs font-bold hover:underline decoration-2 underline-offset-4" href="#">Forgot Password?</a>
+          </div>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">lock</span>
+            <input
+              class="flex w-full rounded-lg border {% if form.password.errors %}border-red-400{% else %}border-slate-200 dark:border-slate-800{% endif %} bg-white dark:bg-slate-900/50 pl-10 pr-12 py-3 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+              id="{{ form.password.id_for_label }}"
+              name="password"
+              placeholder="••••••••"
+              required
+              type="password"
+            />
+            <button
+              type="button"
+              onclick="togglePassword('{{ form.password.id_for_label }}', this)"
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+            >
+              <svg class="eye-open w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+              </svg>
+              <svg class="eye-closed w-5 h-5 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24M1 1l22 22"/>
+              </svg>
+            </button>
+          
+          </div>
+          {% for error in form.password.errors %}
+            <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+          {% endfor %}
+        </div>
+
+        <!-- Remember Me -->
+        
+
+        <!-- Submit Button -->
+        <button
+          class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3.5 px-4 rounded-lg shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2"
+          type="submit"
+        >
+          Sign In
+          <span class="material-symbols-outlined text-xl">arrow_forward</span>
+        </button>
+
+      </form>
+
+      <!-- Social Login Divider -->
+      
+
+      <!-- Social Buttons -->
+      
+
+      <!-- Signup CTA -->
+      <p class="mt-10 text-center text-sm text-slate-500 dark:text-slate-400">
+        Don't have an account yet?
+        <a class="font-bold text-primary hover:underline decoration-2 underline-offset-4 ml-1" href="{% url 'signUp' %}">Create an account</a>
+      </p>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-auto pt-10 flex justify-between items-center text-xs text-slate-400 dark:text-slate-600">
+      <p>© 2024 AutoCore Global Inc.</p>
+      <div class="flex gap-4">
+        <a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+        <a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function togglePassword(fieldId, btn) {
+  const input = document.getElementById(fieldId);
+  const eyeOpen = btn.querySelector('.eye-open');
+  const eyeClosed = btn.querySelector('.eye-closed');
+  if (input.type === 'password') {
+    input.type = 'text';
+    eyeOpen.classList.add('hidden');
+    eyeClosed.classList.remove('hidden');
+  } else {
+    input.type = 'password';
+    eyeOpen.classList.remove('hidden');
+    eyeClosed.classList.add('hidden');
+  }
+}
+</script>
+
+</body>
+</html>

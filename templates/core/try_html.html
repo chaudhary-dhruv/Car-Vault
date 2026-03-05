@@ -3,10 +3,11 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Sign Up | AutoPlatform</title>
+<title>Login | Automotive Portfolio</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
     tailwind.config = {
         darkMode: "class",
@@ -30,305 +31,174 @@
         },
     }
 </script>
-<style>
-    .material-symbols-outlined {
-        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-    }
-    select {
-        appearance: none;
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-        background-position: right 0.5rem center;
-        background-repeat: no-repeat;
-        background-size: 1.5em 1.5em;
-    }
-    /* Django error styling */
-    .field-error {
-        color: #e63743;
-        font-size: 0.75rem;
-        margin-top: 4px;
-    }
-    .input-error {
-        border-color: #e63743 !important;
-    }
-</style>
 </head>
-<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
-<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
-<div class="layout-container flex h-full grow flex-col">
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
+<div class="relative flex min-h-screen w-full overflow-x-hidden">
 
-  <!-- HEADER -->
-  <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 px-6 py-4 lg:px-40 bg-white dark:bg-background-dark/50 backdrop-blur-sm sticky top-0 z-50">
-    <div class="flex items-center gap-3">
-      <div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
-        <span class="material-symbols-outlined">CV</span>
-      </div>
-      <h2 class="text-slate-900 dark:text-slate-100 text-xl font-bold leading-tight tracking-tight">CarVault</h2>
+  <!-- Left Side: Image Content -->
+  <div class="hidden lg:flex lg:w-1/2 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-t from-background-dark/80 to-transparent z-10"></div>
+    <div class="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-700 hover:scale-105"
+      style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC20LGZmYHbR7I3a38Iyic_dAuxw3IwrjU-gMDd0DZG6IhPrdnOZlgwJeQxuzM6kxLv4kz3Sib9PvVL5br_dPMuBN4zdAIKXOI8NfzeMbfIboRRi4iSICXlRE_j3dmLLTa2i9xrkzSdkKoGcISoM8rceRkAip_RQGgUbFunOM_qQOcM5ylFU3gIHmXTY6vOphvbbV8lMnKG2yq8l645UhcC6-3wut_82fKLClAZCccJdfDqrr4Jp8XFGiuq4HQy7VEdlbZoWcvUiDE");'>
     </div>
-    <div class="flex items-center gap-4">
-      <span class="hidden md:inline text-sm text-slate-500">Already have an account?</span>
-      <a href="{% url 'login' %}" class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-5 bg-primary hover:bg-primary/90 text-white text-sm font-bold transition-colors">
-        Log In
-      </a>
+    <div class="absolute bottom-12 left-12 z-20 max-w-md">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="material-symbols-outlined text-primary text-4xl">directions_car</span>
+        <span class="text-white text-2xl font-black tracking-tight">CARVAULT</span>
+      </div>
+      <h1 class="text-white text-5xl font-black leading-tight tracking-tight mb-4">Master your automotive portfolio.</h1>
+      <p class="text-slate-300 text-lg">The professional suite for high-end vehicle management and performance tracking.</p>
     </div>
-  </header>
+  </div>
 
-  <!-- MAIN -->
-  <main class="flex-1 flex items-center justify-center p-6 lg:py-12">
-    <div class="w-full max-w-[480px] space-y-8 bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800">
+  <!-- Right Side: Login Form -->
+  <div class="flex flex-1 flex-col justify-center px-6 py-12 lg:px-24 bg-background-light dark:bg-background-dark">
+    <div class="mx-auto w-full max-w-sm">
 
-      <div class="space-y-2">
-        <h1 class="text-slate-900 dark:text-slate-100 text-3xl font-black leading-tight tracking-tight">Create account</h1>
-        <p class="text-slate-500 dark:text-slate-400 text-base">Join the leading professional automotive network today.</p>
+      <!-- Mobile Header -->
+      <div class="lg:hidden flex items-center gap-2 mb-8">
+        <span class="material-symbols-outlined text-primary text-3xl">directions_car</span>
+        <span class="text-slate-900 dark:text-slate-100 text-xl font-black tracking-tight">AUTOCORE</span>
       </div>
 
-      <!-- Non-field errors (e.g. password mismatch) -->
+      <div class="flex flex-col gap-2 mb-10">
+        <h2 class="text-slate-900 dark:text-slate-100 text-3xl font-extrabold tracking-tight">Welcome Back</h2>
+        <p class="text-slate-500 dark:text-slate-400 text-base">Enter your credentials to access your garage.</p>
+      </div>
+
+      <!-- Non-field errors / invalid credentials -->
       {% if form.non_field_errors %}
-        <div class="rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-3">
+        <div class="mb-5 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-3">
           {% for error in form.non_field_errors %}
             <p class="text-sm text-red-600 dark:text-red-400">{{ error }}</p>
           {% endfor %}
         </div>
       {% endif %}
 
-      <form class="space-y-5" method="POST" action="{% url 'signUp' %}">
+      <!-- Invalid credentials error (when authenticate() returns None) -->
+      {% if form.errors and not form.non_field_errors %}
+        <div class="mb-5 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-3">
+          <p class="text-sm text-red-600 dark:text-red-400">Invalid email or password. Please try again.</p>
+        </div>
+      {% endif %}
+
+      <form action="{% url 'login' %}" class="space-y-5" method="POST">
         {% csrf_token %}
 
-        <!-- First Name + Last Name -->
-        <div class="grid grid-cols-2 gap-4">
-
-          <div class="space-y-2">
-            <label for="{{ form.firstname.id_for_label }}" class="block text-sm font-semibold text-slate-700 dark:text-slate-300">
-              First Name
-            </label>
-            <input
-              type="text"
-              id="{{ form.firstname.id_for_label }}"
-              name="firstname"
-              value="{{ form.firstname.value|default:'' }}"
-              placeholder="First Name"
-              required
-              class="w-full rounded-lg border {% if form.firstname.errors %}border-red-400{% else %}border-slate-200 dark:border-slate-700{% endif %} bg-white dark:bg-slate-800 px-4 py-3 text-slate-900 dark:text-slate-100 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-slate-400"
-            />
-            {% for error in form.firstname.errors %}
-              <p class="field-error">{{ error }}</p>
-            {% endfor %}
-          </div>
-
-          <div class="space-y-2">
-            <label for="{{ form.lastname.id_for_label }}" class="block text-sm font-semibold text-slate-700 dark:text-slate-300">
-              Last Name
-            </label>
-            <input
-              type="text"
-              id="{{ form.lastname.id_for_label }}"
-              name="lastname"
-              value="{{ form.lastname.value|default:'' }}"
-              placeholder="Last Name"
-              required
-              class="w-full rounded-lg border {% if form.lastname.errors %}border-red-400{% else %}border-slate-200 dark:border-slate-700{% endif %} bg-white dark:bg-slate-800 px-4 py-3 text-slate-900 dark:text-slate-100 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-slate-400"
-            />
-            {% for error in form.lastname.errors %}
-              <p class="field-error">{{ error }}</p>
-            {% endfor %}
-          </div>
-
-        </div>
-
-        <!-- Email -->
-        <div class="space-y-2">
-          <label for="{{ form.email.id_for_label }}" class="block text-sm font-semibold text-slate-700 dark:text-slate-300">
+        <!-- Email Field -->
+        <div class="flex flex-col gap-2">
+          <label class="text-slate-700 dark:text-slate-300 text-sm font-semibold" for="{{ form.email.id_for_label }}">
             Email Address
           </label>
-          <input
-            type="email"
-            id="{{ form.email.id_for_label }}"
-            name="email"
-            value="{{ form.email.value|default:'' }}"
-            placeholder="name@company.com"
-            required
-            class="w-full rounded-lg border {% if form.email.errors %}border-red-400{% else %}border-slate-200 dark:border-slate-700{% endif %} bg-white dark:bg-slate-800 px-4 py-3 text-slate-900 dark:text-slate-100 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-slate-400"
-          />
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">mail</span>
+            <input
+              class="flex w-full rounded-lg border {% if form.email.errors %}border-red-400{% else %}border-slate-200 dark:border-slate-800{% endif %} bg-white dark:bg-slate-900/50 px-10 py-3 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+              id="{{ form.email.id_for_label }}"
+              name="email"
+              value="{{ form.email.value|default:'' }}"
+              placeholder="name@company.com"
+              required
+              type="email"
+            />
+          </div>
           {% for error in form.email.errors %}
-            <p class="field-error">{{ error }}</p>
+            <p class="text-red-500 text-xs mt-1">{{ error }}</p>
           {% endfor %}
         </div>
 
-        <!-- Phone -->
-        <div class="space-y-2">
-          <label for="{{ form.phone.id_for_label }}" class="block text-sm font-semibold text-slate-700 dark:text-slate-300">
-            Phone Number
-          </label>
-          <input
-            type="tel"
-            id="{{ form.phone.id_for_label }}"
-            name="phone"
-            value="{{ form.phone.value|default:'' }}"
-            placeholder="00000-00000"
-            class="w-full rounded-lg border {% if form.phone.errors %}border-red-400{% else %}border-slate-200 dark:border-slate-700{% endif %} bg-white dark:bg-slate-800 px-4 py-3 text-slate-900 dark:text-slate-100 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-slate-400"
-          />
-          {% for error in form.phone.errors %}
-            <p class="field-error">{{ error }}</p>
-          {% endfor %}
-        </div>
-
-        <!-- Gender -->
-        <div class="space-y-2">
-          <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Gender</label>
-          <div class="flex items-center gap-6 pt-1">
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input
-                class="w-4 h-4 text-primary focus:ring-primary border-slate-300 dark:border-slate-700 dark:bg-slate-800"
-                name="gender"
-                type="radio"
-                value="male"
-                {% if form.gender.value == 'male' or not form.gender.value %}checked{% endif %}
-              />
-              <span class="text-sm text-slate-600 dark:text-slate-400">Male</span>
+        <!-- Password Field -->
+        <div class="flex flex-col gap-2">
+          <div class="flex justify-between items-center">
+            <label class="text-slate-700 dark:text-slate-300 text-sm font-semibold" for="{{ form.password.id_for_label }}">
+              Password
             </label>
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input
-                class="w-4 h-4 text-primary focus:ring-primary border-slate-300 dark:border-slate-700 dark:bg-slate-800"
-                name="gender"
-                type="radio"
-                value="female"
-                {% if form.gender.value == 'female' %}checked{% endif %}
-              />
-              <span class="text-sm text-slate-600 dark:text-slate-400">Female</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input
-                class="w-4 h-4 text-primary focus:ring-primary border-slate-300 dark:border-slate-700 dark:bg-slate-800"
-                name="gender"
-                type="radio"
-                value="other"
-                {% if form.gender.value == 'other' %}checked{% endif %}
-              />
-              <span class="text-sm text-slate-600 dark:text-slate-400">Other</span>
-            </label>
+            <a class="text-primary text-xs font-bold hover:underline decoration-2 underline-offset-4" href="#">Forgot Password?</a>
           </div>
-          {% for error in form.gender.errors %}
-            <p class="field-error">{{ error }}</p>
-          {% endfor %}
-        </div>
-
-        <!-- Professional Role -->
-        <div class="space-y-2">
-          <label for="{{ form.role.id_for_label }}" class="block text-sm font-semibold text-slate-700 dark:text-slate-300">
-            Professional Role
-          </label>
-          <select
-            id="{{ form.role.id_for_label }}"
-            name="role"
-            class="w-full rounded-lg border {% if form.role.errors %}border-red-400{% else %}border-slate-200 dark:border-slate-700{% endif %} bg-white dark:bg-slate-800 px-4 py-3 text-slate-900 dark:text-slate-100 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
-          >
-            <option value="user" {% if form.role.value == 'user' or not form.role.value %}selected{% endif %}>User</option>
-            <option value="admin" {% if form.role.value == 'admin' %}selected{% endif %}>Admin</option>
-          </select>
-          {% for error in form.role.errors %}
-            <p class="field-error">{{ error }}</p>
-          {% endfor %}
-        </div>
-
-        <!-- Password -->
-        <div class="space-y-2">
-          <label for="{{ form.password1.id_for_label }}" class="block text-sm font-semibold text-slate-700 dark:text-slate-300">
-            Password
-          </label>
           <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">lock</span>
             <input
-              type="password"
-              id="{{ form.password1.id_for_label }}"
-              name="password1"
-              placeholder="Min. 8 characters"
+              class="flex w-full rounded-lg border {% if form.password.errors %}border-red-400{% else %}border-slate-200 dark:border-slate-800{% endif %} bg-white dark:bg-slate-900/50 pl-10 pr-12 py-3 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+              id="{{ form.password.id_for_label }}"
+              name="password"
+              placeholder="••••••••"
               required
-              class="w-full rounded-lg border {% if form.password1.errors %}border-red-400{% else %}border-slate-200 dark:border-slate-700{% endif %} bg-white dark:bg-slate-800 px-4 py-3 pr-12 text-slate-900 dark:text-slate-100 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-slate-400"
+              type="password"
             />
             <button
               type="button"
-              onclick="togglePassword('{{ form.password1.id_for_label }}', this)"
+              onclick="togglePassword('{{ form.password.id_for_label }}', this)"
               class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
             >
-              <span class="material-symbols-outlined text-[20px]"> </span>
+              <svg class="eye-open w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+              </svg>
+              <svg class="eye-closed w-5 h-5 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24M1 1l22 22"/>
+              </svg>
             </button>
+          
           </div>
-          {% for error in form.password1.errors %}
-            <p class="field-error">{{ error }}</p>
+          {% for error in form.password.errors %}
+            <p class="text-red-500 text-xs mt-1">{{ error }}</p>
           {% endfor %}
         </div>
 
-        <!-- Confirm Password -->
-        <div class="space-y-2">
-          <label for="{{ form.password2.id_for_label }}" class="block text-sm font-semibold text-slate-700 dark:text-slate-300">
-            Confirm Password
-          </label>
-          <div class="relative">
-            <input
-              type="password"
-              id="{{ form.password2.id_for_label }}"
-              name="password2"
-              placeholder="Repeat your password"
-              required
-              class="w-full rounded-lg border {% if form.password2.errors %}border-red-400{% else %}border-slate-200 dark:border-slate-700{% endif %} bg-white dark:bg-slate-800 px-4 py-3 pr-12 text-slate-900 dark:text-slate-100 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-slate-400"
-            />
-            <button
-              type="button"
-              onclick="togglePassword('{{ form.password2.id_for_label }}', this)"
-              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
-            >
-              <span class="material-symbols-outlined text-[20px]"> </span>
-            </button>
-          </div>
-          {% for error in form.password2.errors %}
-            <p class="field-error">{{ error }}</p>
-          {% endfor %}
-        </div>
+        <!-- Remember Me -->
+        
 
-        <!-- Submit -->
-        <div class="pt-4">
-          <button
-            type="submit"
-            class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2"
-          >
-            <span>Create Account</span>
-            
-          </button>
-        </div>
+        <!-- Submit Button -->
+        <button
+          class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3.5 px-4 rounded-lg shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2"
+          type="submit"
+        >
+          Sign In
+          <span class="material-symbols-outlined text-xl">arrow_forward</span>
+        </button>
 
       </form>
 
-      <!-- Divider -->
+      <!-- Social Login Divider -->
       
+
       <!-- Social Buttons -->
       
 
-      <p class="text-center text-xs text-slate-400 px-4">
-        By clicking "Create Account", you agree to our
-        <a class="text-primary hover:underline" href="#">Terms of Service</a> and
-        <a class="text-primary hover:underline" href="#">Privacy Policy</a>.
+      <!-- Signup CTA -->
+      <p class="mt-10 text-center text-sm text-slate-500 dark:text-slate-400">
+        Don't have an account yet?
+        <a class="font-bold text-primary hover:underline decoration-2 underline-offset-4 ml-1" href="{% url 'signUp' %}">Create an account</a>
       </p>
 
     </div>
-  </main>
 
-  <footer class="px-6 py-8 lg:px-40 text-center">
-    <p class="text-sm text-slate-500">© 2024 AutoPlatform. All rights reserved.</p>
-  </footer>
+    <!-- Footer -->
+    <div class="mt-auto pt-10 flex justify-between items-center text-xs text-slate-400 dark:text-slate-600">
+      <p>© 2024 AutoCore Global Inc.</p>
+      <div class="flex gap-4">
+        <a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+        <a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
+      </div>
+    </div>
 
-</div>
+  </div>
 </div>
 
 <script>
   function togglePassword(fieldId, btn) {
-    const input = document.getElementById(fieldId);
-    const icon = btn.querySelector('.material-symbols-outlined');
-    if (input.type === 'password') {
-      input.type = 'text';
-      icon.textContent = 'visibility_off';
-    } else {
-      input.type = 'password';
-      icon.textContent = 'visibility';
-    }
+  const input = document.getElementById(fieldId);
+  const eyeOpen = btn.querySelector('.eye-open');
+  const eyeClosed = btn.querySelector('.eye-closed');
+  if (input.type === 'password') {
+    input.type = 'text';
+    eyeOpen.classList.add('hidden');
+    eyeClosed.classList.remove('hidden');
+  } else {
+    input.type = 'password';
+    eyeOpen.classList.remove('hidden');
+    eyeClosed.classList.add('hidden');
   }
+}
 </script>
 
 </body>
