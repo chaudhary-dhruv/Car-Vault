@@ -107,10 +107,11 @@
           {% endfor %}
         </div>
 
+        
         <!-- Password Field -->
         <div class="flex flex-col gap-2">
           <div class="flex justify-between items-center">
-            <label class="text-slate-700 dark:text-slate-300 text-sm font-semibold" for="{{ form.password.id_for_label }}">
+            <label class="text-slate-700 dark:text-slate-300 text-sm font-semibold" for="id_password">
               Password
             </label>
             <a class="text-primary text-xs font-bold hover:underline decoration-2 underline-offset-4" href="#">Forgot Password?</a>
@@ -119,7 +120,7 @@
             <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">lock</span>
             <input
               class="flex w-full rounded-lg border {% if form.password.errors %}border-red-400{% else %}border-slate-200 dark:border-slate-800{% endif %} bg-white dark:bg-slate-900/50 pl-10 pr-12 py-3 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-              id="{{ form.password.id_for_label }}"
+              id="id_password"
               name="password"
               placeholder="••••••••"
               required
@@ -127,7 +128,7 @@
             />
             <button
               type="button"
-              onclick="togglePassword('{{ form.password.id_for_label }}', this)"
+              onclick="togglePassword('id_password', this)"
               class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
             >
               <svg class="eye-open w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -137,7 +138,6 @@
                 <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24M1 1l22 22"/>
               </svg>
             </button>
-          
           </div>
           {% for error in form.password.errors %}
             <p class="text-red-500 text-xs mt-1">{{ error }}</p>
@@ -186,19 +186,20 @@
 
 <script>
   function togglePassword(fieldId, btn) {
-  const input = document.getElementById(fieldId);
-  const eyeOpen = btn.querySelector('.eye-open');
-  const eyeClosed = btn.querySelector('.eye-closed');
-  if (input.type === 'password') {
-    input.type = 'text';
-    eyeOpen.classList.add('hidden');
-    eyeClosed.classList.remove('hidden');
-  } else {
-    input.type = 'password';
-    eyeOpen.classList.remove('hidden');
-    eyeClosed.classList.add('hidden');
+    const input = document.getElementById(fieldId);
+    if (!input) return;
+    const eyeOpen = btn.querySelector('.eye-open');
+    const eyeClosed = btn.querySelector('.eye-closed');
+    if (input.type === 'password') {
+      input.type = 'text';
+      eyeOpen.classList.add('hidden');
+      eyeClosed.classList.remove('hidden');
+    } else {
+      input.type = 'password';
+      eyeOpen.classList.remove('hidden');
+      eyeClosed.classList.add('hidden');
+    }
   }
-}
 </script>
 
 </body>
