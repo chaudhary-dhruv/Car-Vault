@@ -1,206 +1,267 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+
+<html lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Login | Automotive Portfolio</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
-    tailwind.config = {
+      tailwind.config = {
         darkMode: "class",
         theme: {
-            extend: {
-                colors: {
-                    "primary": "#e63743",
-                    "background-light": "#f8f6f6",
-                    "background-dark": "#211112",
-                },
-                fontFamily: {
-                    "display": ["Inter", "sans-serif"]
-                },
-                borderRadius: {
-                    "DEFAULT": "0.25rem",
-                    "lg": "0.5rem",
-                    "xl": "0.75rem",
-                    "full": "9999px"
-                },
+          extend: {
+            colors: {
+              "primary": "#e63743",
+              "background-light": "#f8f6f6",
+              "background-dark": "#211112",
+              "neutral-light": "#f4f0f0",
+              "neutral-dark": "#3d2a2b",
             },
+            fontFamily: {
+              "display": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
         },
-    }
-</script>
+      }
+    </script>
+<title>AutoCompare | Find Your Perfect Drive</title>
 </head>
-<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
-<div class="relative flex min-h-screen w-full overflow-x-hidden">
-
-  <!-- Left Side: Image Content -->
-  <div class="hidden lg:flex lg:w-1/2 relative overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-t from-background-dark/80 to-transparent z-10"></div>
-    <div class="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-700 hover:scale-105"
-      style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC20LGZmYHbR7I3a38Iyic_dAuxw3IwrjU-gMDd0DZG6IhPrdnOZlgwJeQxuzM6kxLv4kz3Sib9PvVL5br_dPMuBN4zdAIKXOI8NfzeMbfIboRRi4iSICXlRE_j3dmLLTa2i9xrkzSdkKoGcISoM8rceRkAip_RQGgUbFunOM_qQOcM5ylFU3gIHmXTY6vOphvbbV8lMnKG2yq8l645UhcC6-3wut_82fKLClAZCccJdfDqrr4Jp8XFGiuq4HQy7VEdlbZoWcvUiDE");'>
-    </div>
-    <div class="absolute bottom-12 left-12 z-20 max-w-md">
-      <div class="flex items-center gap-2 mb-4">
-        <span class="material-symbols-outlined text-primary text-4xl">directions_car</span>
-        <span class="text-white text-2xl font-black tracking-tight">CARVAULT</span>
-      </div>
-      <h1 class="text-white text-5xl font-black leading-tight tracking-tight mb-4">Master your automotive portfolio.</h1>
-      <p class="text-slate-300 text-lg">The professional suite for high-end vehicle management and performance tracking.</p>
-    </div>
-  </div>
-
-  <!-- Right Side: Login Form -->
-  <div class="flex flex-1 flex-col justify-center px-6 py-12 lg:px-24 bg-background-light dark:bg-background-dark">
-    <div class="mx-auto w-full max-w-sm">
-
-      <!-- Mobile Header -->
-      <div class="lg:hidden flex items-center gap-2 mb-8">
-        <span class="material-symbols-outlined text-primary text-3xl">directions_car</span>
-        <span class="text-slate-900 dark:text-slate-100 text-xl font-black tracking-tight">AUTOCORE</span>
-      </div>
-
-      <div class="flex flex-col gap-2 mb-10">
-        <h2 class="text-slate-900 dark:text-slate-100 text-3xl font-extrabold tracking-tight">Welcome Back</h2>
-        <p class="text-slate-500 dark:text-slate-400 text-base">Enter your credentials to access your garage.</p>
-      </div>
-
-      <!-- Non-field errors / invalid credentials -->
-      {% if form.non_field_errors %}
-        <div class="mb-5 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-3">
-          {% for error in form.non_field_errors %}
-            <p class="text-sm text-red-600 dark:text-red-400">{{ error }}</p>
-          {% endfor %}
-        </div>
-      {% endif %}
-
-      <!-- Invalid credentials error (when authenticate() returns None) -->
-      {% if form.errors and not form.non_field_errors %}
-        <div class="mb-5 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-3">
-          <p class="text-sm text-red-600 dark:text-red-400">Invalid email or password. Please try again.</p>
-        </div>
-      {% endif %}
-
-      <form action="{% url 'login' %}" class="space-y-5" method="POST">
-        {% csrf_token %}
-
-        <!-- Email Field -->
-        <div class="flex flex-col gap-2">
-          <label class="text-slate-700 dark:text-slate-300 text-sm font-semibold" for="{{ form.email.id_for_label }}">
-            Email Address
-          </label>
-          <div class="relative">
-            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">mail</span>
-            <input
-              class="flex w-full rounded-lg border {% if form.email.errors %}border-red-400{% else %}border-slate-200 dark:border-slate-800{% endif %} bg-white dark:bg-slate-900/50 px-10 py-3 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-              id="{{ form.email.id_for_label }}"
-              name="email"
-              value="{{ form.email.value|default:'' }}"
-              placeholder="name@company.com"
-              required
-              type="email"
-            />
-          </div>
-          {% for error in form.email.errors %}
-            <p class="text-red-500 text-xs mt-1">{{ error }}</p>
-          {% endfor %}
-        </div>
-
-        
-        <!-- Password Field -->
-        <div class="flex flex-col gap-2">
-          <div class="flex justify-between items-center">
-            <label class="text-slate-700 dark:text-slate-300 text-sm font-semibold" for="id_password">
-              Password
-            </label>
-            <a class="text-primary text-xs font-bold hover:underline decoration-2 underline-offset-4" href="#">Forgot Password?</a>
-          </div>
-          <div class="relative">
-            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">lock</span>
-            <input
-              class="flex w-full rounded-lg border {% if form.password.errors %}border-red-400{% else %}border-slate-200 dark:border-slate-800{% endif %} bg-white dark:bg-slate-900/50 pl-10 pr-12 py-3 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-              id="id_password"
-              name="password"
-              placeholder="••••••••"
-              required
-              type="password"
-            />
-            <button
-              type="button"
-              onclick="togglePassword('id_password', this)"
-              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
-            >
-              <svg class="eye-open w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
-              </svg>
-              <svg class="eye-closed w-5 h-5 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24M1 1l22 22"/>
-              </svg>
-            </button>
-          </div>
-          {% for error in form.password.errors %}
-            <p class="text-red-500 text-xs mt-1">{{ error }}</p>
-          {% endfor %}
-        </div>
-
-        <!-- Remember Me -->
-        
-
-        <!-- Submit Button -->
-        <button
-          class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3.5 px-4 rounded-lg shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2"
-          type="submit"
-        >
-          Sign In
-          <span class="material-symbols-outlined text-xl">arrow_forward</span>
-        </button>
-
-      </form>
-
-      <!-- Social Login Divider -->
-      
-
-      <!-- Social Buttons -->
-      
-
-      <!-- Signup CTA -->
-      <p class="mt-10 text-center text-sm text-slate-500 dark:text-slate-400">
-        Don't have an account yet?
-        <a class="font-bold text-primary hover:underline decoration-2 underline-offset-4 ml-1" href="{% url 'signUp' %}">Create an account</a>
-      </p>
-
-    </div>
-
-    <!-- Footer -->
-    <div class="mt-auto pt-10 flex justify-between items-center text-xs text-slate-400 dark:text-slate-600">
-      <p>© 2024 AutoCore Global Inc.</p>
-      <div class="flex gap-4">
-        <a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
-        <a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
-      </div>
-    </div>
-
-  </div>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="relative flex h-auto min-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-neutral-light dark:border-neutral-dark px-6 md:px-20 py-4 bg-white dark:bg-background-dark sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<div class="size-8 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 0.757355L47.2426 24L24 47.2426L0.757355 24L24 0.757355ZM21 35.7574V12.2426L9.24264 24L21 35.7574Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
 </div>
-
-<script>
-  function togglePassword(fieldId, btn) {
-    const input = document.getElementById(fieldId);
-    if (!input) return;
-    const eyeOpen = btn.querySelector('.eye-open');
-    const eyeClosed = btn.querySelector('.eye-closed');
-    if (input.type === 'password') {
-      input.type = 'text';
-      eyeOpen.classList.add('hidden');
-      eyeClosed.classList.remove('hidden');
-    } else {
-      input.type = 'password';
-      eyeOpen.classList.remove('hidden');
-      eyeClosed.classList.add('hidden');
-    }
-  }
-</script>
-
-</body>
-</html>
+<h2 class="text-slate-900 dark:text-slate-100 text-xl font-bold leading-tight tracking-tight">AutoCompare</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8 items-center">
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-slate-700 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="#">Models</a>
+<a class="text-slate-700 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="#">Compare</a>
+<a class="text-slate-700 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="#">Reviews</a>
+<a class="text-slate-700 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="#">News</a>
+</nav>
+<button class="flex min-w-[100px] cursor-pointer items-center justify-center rounded-lg h-10 px-5 bg-primary text-white text-sm font-bold transition-transform active:scale-95">
+<span>Sign In</span>
+</button>
+</div>
+</header>
+<main class="flex flex-col flex-1">
+<!-- Hero Section -->
+<div class="px-6 md:px-20 py-10">
+<div class="@container">
+<div class="relative min-h-[520px] flex flex-col gap-8 rounded-xl items-center justify-center p-8 overflow-hidden bg-slate-900 shadow-2xl" data-alt="Modern dark sports car on open road" style='background-image: linear-gradient(rgba(0, 0, 0, 0.4) 0%, rgba(33, 17, 18, 0.8) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuCXJ5Ddv-ExhyBBsLtmKxpVyhiAynMuHefVhj2BPVUks6kdVH28_5bUQjzVgLBMTs2bKn9txeqjPDxjE_JIiswABURVItgRtsp0ClJU91t2zxnyD73y95TTGeS4XkDVx2GRZxfSS3YMojR9BGEAzfFs_uZziwYHqQK8E33vgFMDQ9km8qwHi0bno2b9ntTb4t715a1fxcd_7KDlgO92V_OtTvs52u7gJFaaIiZUJUjAPFnSZJk5Sm6IFM73-useAkkNGcjKrMlxyh0"); background-size: cover; background-position: center;'>
+<div class="flex flex-col gap-4 text-center max-w-2xl z-10">
+<h1 class="text-white text-5xl md:text-6xl font-black leading-tight tracking-tight">
+                                Find Your Perfect Drive
+                            </h1>
+<p class="text-slate-200 text-lg md:text-xl font-normal opacity-90">
+                                Compare 500+ cars by name, brand, or budget to make an informed choice.
+                            </p>
+</div>
+<div class="w-full max-w-2xl z-10">
+<div class="flex w-full bg-white dark:bg-background-dark rounded-xl shadow-lg p-1.5 border border-neutral-light dark:border-neutral-dark">
+<div class="flex items-center pl-4 text-slate-400">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="flex-1 border-none focus:ring-0 bg-transparent text-slate-900 dark:text-slate-100 placeholder:text-slate-400 text-base md:text-lg px-4" placeholder="Search car by name, brand, or budget"/>
+<button class="bg-primary hover:bg-primary/90 text-white px-8 rounded-lg font-bold transition-colors">
+                                    Search
+                                </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Popular Brands -->
+<section class="px-6 md:px-20 py-12">
+<div class="flex items-center justify-between mb-8">
+<h2 class="text-slate-900 dark:text-slate-100 text-2xl font-bold leading-tight">Popular Brands</h2>
+<a class="text-primary font-semibold text-sm hover:underline" href="#">View All Brands</a>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+<div class="flex flex-col gap-3 rounded-xl border border-neutral-light dark:border-neutral-dark bg-white dark:bg-background-dark/50 p-6 items-center hover:border-primary/50 transition-all cursor-pointer group">
+<div class="bg-slate-100 dark:bg-neutral-dark flex items-center justify-center aspect-square rounded-full w-16 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400 text-3xl">directions_car</span>
+</div>
+<h3 class="text-slate-900 dark:text-slate-100 text-base font-bold">Toyota</h3>
+</div>
+<div class="flex flex-col gap-3 rounded-xl border border-neutral-light dark:border-neutral-dark bg-white dark:bg-background-dark/50 p-6 items-center hover:border-primary/50 transition-all cursor-pointer group">
+<div class="bg-slate-100 dark:bg-neutral-dark flex items-center justify-center aspect-square rounded-full w-16 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400 text-3xl">electric_car</span>
+</div>
+<h3 class="text-slate-900 dark:text-slate-100 text-base font-bold">Tesla</h3>
+</div>
+<div class="flex flex-col gap-3 rounded-xl border border-neutral-light dark:border-neutral-dark bg-white dark:bg-background-dark/50 p-6 items-center hover:border-primary/50 transition-all cursor-pointer group">
+<div class="bg-slate-100 dark:bg-neutral-dark flex items-center justify-center aspect-square rounded-full w-16 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400 text-3xl">sports_score</span>
+</div>
+<h3 class="text-slate-900 dark:text-slate-100 text-base font-bold">BMW</h3>
+</div>
+<div class="flex flex-col gap-3 rounded-xl border border-neutral-light dark:border-neutral-dark bg-white dark:bg-background-dark/50 p-6 items-center hover:border-primary/50 transition-all cursor-pointer group">
+<div class="bg-slate-100 dark:bg-neutral-dark flex items-center justify-center aspect-square rounded-full w-16 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400 text-3xl">minor_crash</span>
+</div>
+<h3 class="text-slate-900 dark:text-slate-100 text-base font-bold">Honda</h3>
+</div>
+<div class="flex flex-col gap-3 rounded-xl border border-neutral-light dark:border-neutral-dark bg-white dark:bg-background-dark/50 p-6 items-center hover:border-primary/50 transition-all cursor-pointer group">
+<div class="bg-slate-100 dark:bg-neutral-dark flex items-center justify-center aspect-square rounded-full w-16 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400 text-3xl">car_rental</span>
+</div>
+<h3 class="text-slate-900 dark:text-slate-100 text-base font-bold">Mercedes</h3>
+</div>
+<div class="flex flex-col gap-3 rounded-xl border border-neutral-light dark:border-neutral-dark bg-white dark:bg-background-dark/50 p-6 items-center hover:border-primary/50 transition-all cursor-pointer group">
+<div class="bg-slate-100 dark:bg-neutral-dark flex items-center justify-center aspect-square rounded-full w-16 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400 text-3xl">commute</span>
+</div>
+<h3 class="text-slate-900 dark:text-slate-100 text-base font-bold">Audi</h3>
+</div>
+</div>
+</section>
+<!-- Trending Comparisons -->
+<section class="px-6 md:px-20 py-12 bg-slate-50 dark:bg-neutral-dark/10">
+<div class="flex items-center justify-between mb-8">
+<h2 class="text-slate-900 dark:text-slate-100 text-2xl font-bold leading-tight">Trending Comparisons</h2>
+<button class="bg-primary/10 text-primary px-4 py-2 rounded-lg font-bold text-sm hover:bg-primary/20 transition-colors">
+                        Explore Comparisons
+                    </button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Comparison Card 1 -->
+<div class="bg-white dark:bg-background-dark rounded-xl overflow-hidden shadow-sm border border-neutral-light dark:border-neutral-dark group hover:shadow-md transition-shadow">
+<div class="flex h-40">
+<div class="w-1/2 bg-cover bg-center border-r border-neutral-light dark:border-neutral-dark" data-alt="Front profile of a white SUV" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCQ7u7odV4DXQM1Z6KoVIEIUY10utNto4115TaKB2Y2UZqkVe5_dvIuaJ19VVqGPDXSi10IlpyUkRCcMF5_yfgwSIAjBcBCytQNlJFHnifH7J9Xf0P_hwK8AkI3QYz2FEXJe-yWawpcXBD0lK1UGopRCUbZIS8a5c0iuq19U5IDM-a4nkkyj776K8gEYOf6nYy5lgKoDDCJWo7zjxA_6uZDcGAXIOPCMwlyi1Ci1DpZvWrpq2cU4TNfM3utZ8UPzk8y1AKudm_cynI");'></div>
+<div class="w-1/2 bg-cover bg-center" data-alt="Front profile of a blue SUV" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBTMoopIsRpAASsux-koBd42OxBic0BZjIcLFt4n0Vm8SKoqVCTX7KvbY8farMhqP9mfLvGLMZ_pz2CTjaLnCPezKAl6SncaZ6zJYdNEnJrPFmZ59X_Hb1mCX9a0c7SH6ZZnHZwNyF9Tb5gVSN0Qmj-VcmCqJuxegBtxENRRsEKNnZ46c06WlCeUT_ujUD3b1o83mZC0_sB3vhqDVTuZC9BkHy_T7lWdp6wPqrBAKcKaJsMEfAOSP9I2xXidEjJUjbBvm90PjGNr9g");'></div>
+</div>
+<div class="p-5">
+<div class="flex items-center justify-between mb-4">
+<span class="text-slate-900 dark:text-slate-100 font-bold text-lg">Hyundai Creta</span>
+<span class="bg-primary/10 text-primary text-[10px] font-black px-2 py-0.5 rounded-full uppercase italic">vs</span>
+<span class="text-slate-900 dark:text-slate-100 font-bold text-lg text-right">Kia Seltos</span>
+</div>
+<button class="w-full py-2 border border-primary text-primary rounded-lg font-bold hover:bg-primary hover:text-white transition-all">Compare Specs</button>
+</div>
+</div>
+<!-- Comparison Card 2 -->
+<div class="bg-white dark:bg-background-dark rounded-xl overflow-hidden shadow-sm border border-neutral-light dark:border-neutral-dark group hover:shadow-md transition-shadow">
+<div class="flex h-40">
+<div class="w-1/2 bg-cover bg-center border-r border-neutral-light dark:border-neutral-dark" data-alt="Luxury German sedan black" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDqJZw4ya7Sii00RxhMHZu79i5VMld4lepFkSWHOc1ENRBoqRxhIF3XT_vWseyz4eNajDSGzWS4yg-ZVtwlIF853GfxJQ_dvEPgFSCGLqNZOpqCbW1-UT1KPOI13UEp4vVToN5QJeF-aLp1_aHlLN6qrff0l18RbsxBn8IQI9kpQmim9ojpa-r-CHmZXJfjRpgFPMxaEqV3NXwsNKkIllXpIt5c2wkQhXSQnkPKGQagMougd3vPbxf3bFfiDWfYgNqwxQcWTplj7js");'></div>
+<div class="w-1/2 bg-cover bg-center" data-alt="Luxury German sedan white" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD9QfHKAWeGi9L5Ham461-DtB56RSGhDOtVEVzeu3-9vTbYIRP_V-_SrVCA5iez1mqtiRdf4b-v3fuFN7c_8ccsMAjiIBv6wZz8eD9lrTLbVyygKDY0WuUsewAYdnfqyORkvs9xlcYZjRBPujPpOZ2USCVF9cpcji_fuSFIRAjUHSFf5PZ3rI8vMwviQh4QPS-LPuiPPghbfJDwmKPP814uRiVLH-dSQJmHmKqc494up64VV0e7KSIGxK3--943xWGHxaWWx3ow9_4");'></div>
+</div>
+<div class="p-5">
+<div class="flex items-center justify-between mb-4">
+<span class="text-slate-900 dark:text-slate-100 font-bold text-lg">BMW 3 Series</span>
+<span class="bg-primary/10 text-primary text-[10px] font-black px-2 py-0.5 rounded-full uppercase italic">vs</span>
+<span class="text-slate-900 dark:text-slate-100 font-bold text-lg text-right">Mercedes C-Class</span>
+</div>
+<button class="w-full py-2 border border-primary text-primary rounded-lg font-bold hover:bg-primary hover:text-white transition-all">Compare Specs</button>
+</div>
+</div>
+<!-- Comparison Card 3 -->
+<div class="bg-white dark:bg-background-dark rounded-xl overflow-hidden shadow-sm border border-neutral-light dark:border-neutral-dark group hover:shadow-md transition-shadow">
+<div class="flex h-40">
+<div class="w-1/2 bg-cover bg-center border-r border-neutral-light dark:border-neutral-dark" data-alt="Modern electric vehicle front view" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAr5pIVwPWD8HEdNsL3TxCbZqhMf9t6BYeudnV5N5H3UQL5tDrhM1fgpWg0TLS-djStcFBIEiePcfP_pjNhA6vvvE4CM8lU8g-ovjwUcOc1b32eT7bG9Q6djgpJ-ttaFkslNEe-h_sZ6z7ilKHyvoEbiof4TYIdjBTv89RtABBWL79aCChYEmJuH1aRHE5SLy0W6GI6nAHUBNS2-k-FVsKv4YqOM0gnJ1-yr5NhM4GtPme0uNLr9pegsjK9bJIQHqC1OObtXn0Q0KU");'></div>
+<div class="w-1/2 bg-cover bg-center" data-alt="Sleek white electric sedan" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDgeYtwhjSnGTOUplgDWY97CI5QWzO5rp3KG980rZKB-HEYCB25SQV8yAfKH988F0tpV4C-txVrZ3_MPC6XhIwmbY1Ks-bNAUv_H4ps8oMmGX7rN0QZc3Kf68Ii0zgSR_Fx2Ay0Gf3OWKMtawSm_jz_YrtNvU9IkBwZDPlJa7Nr38PRM7BT9IyLt9zIH8HcBzEbgNi4oqzYKCaHa11gcmlEGsaip1jSHM4vHpdjRr5spR0vqBCVqlE6c1dLPZ3qR0f9gHAfV9ngZ28");'></div>
+</div>
+<div class="p-5">
+<div class="flex items-center justify-between mb-4">
+<span class="text-slate-900 dark:text-slate-100 font-bold text-lg">Tesla Model 3</span>
+<span class="bg-primary/10 text-primary text-[10px] font-black px-2 py-0.5 rounded-full uppercase italic">vs</span>
+<span class="text-slate-900 dark:text-slate-100 font-bold text-lg text-right">Polestar 2</span>
+</div>
+<button class="w-full py-2 border border-primary text-primary rounded-lg font-bold hover:bg-primary hover:text-white transition-all">Compare Specs</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Bottom CTA Section -->
+<section class="px-6 md:px-20 py-20 bg-white dark:bg-background-dark text-center">
+<div class="max-w-3xl mx-auto space-y-6">
+<h2 class="text-3xl md:text-4xl font-black text-slate-900 dark:text-slate-100">Ready to make a choice?</h2>
+<p class="text-slate-600 dark:text-slate-400 text-lg">Our side-by-side comparison tool breaks down everything from torque to technology, helping you find the vehicle that fits your life perfectly.</p>
+<div class="pt-4">
+<button class="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white text-lg font-bold px-10 py-4 rounded-xl shadow-xl shadow-primary/20 hover:shadow-primary/30 transition-all transform hover:-translate-y-1">
+<span class="material-symbols-outlined">compare_arrows</span>
+                            Compare Cars Now
+                        </button>
+</div>
+<div class="grid grid-cols-3 gap-4 pt-10 opacity-50 grayscale hover:grayscale-0 transition-all">
+<div class="text-center">
+<p class="text-2xl font-bold text-slate-900 dark:text-slate-100">1.2M+</p>
+<p class="text-xs uppercase font-semibold text-slate-500">Monthly Users</p>
+</div>
+<div class="text-center border-x border-neutral-light dark:border-neutral-dark">
+<p class="text-2xl font-bold text-slate-900 dark:text-slate-100">50+</p>
+<p class="text-xs uppercase font-semibold text-slate-500">Brands</p>
+</div>
+<div class="text-center">
+<p class="text-2xl font-bold text-slate-900 dark:text-slate-100">10k+</p>
+<p class="text-xs uppercase font-semibold text-slate-500">Expert Reviews</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-slate-100 dark:bg-background-dark border-t border-neutral-light dark:border-neutral-dark px-6 md:px-20 py-12">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+<div class="col-span-1 md:col-span-1">
+<div class="flex items-center gap-3 text-primary mb-6">
+<div class="size-6">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 0.757355L47.2426 24L24 47.2426L0.757355 24L24 0.757355ZM21 35.7574V12.2426L9.24264 24L21 35.7574Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold">AutoCompare</h2>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
+                        The world's most trusted automotive comparison platform. We provide unbiased data to help you drive home the right car.
+                    </p>
+</div>
+<div>
+<h4 class="font-bold mb-6 text-slate-900 dark:text-slate-100">Resources</h4>
+<ul class="space-y-4 text-sm text-slate-600 dark:text-slate-400">
+<li><a class="hover:text-primary transition-colors" href="#">Car Buying Guide</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Fuel Efficiency Tips</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Insurance Calculator</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Used Car Valuation</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold mb-6 text-slate-900 dark:text-slate-100">Quick Links</h4>
+<ul class="space-y-4 text-sm text-slate-600 dark:text-slate-400">
+<li><a class="hover:text-primary transition-colors" href="#">SUV Comparison</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">EV Range Finder</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Sedan Features</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Hatchback Deals</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold mb-6 text-slate-900 dark:text-slate-100">Newsletter</h4>
+<p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Get the latest automotive news and deals directly.</p>
+<div class="flex gap-2">
+<input class="flex-1 rounded-lg border-neutral-light dark:border-neutral-dark bg-white dark:bg-neutral-dark text-sm px-4 h-10" placeholder="Email" type="email"/>
+<button class="bg-primary text-white px-4 rounded-lg hover:bg-primary/90 transition-colors">Join</button>
+</div>
+</div>
+</div>
+<div class="mt-12 pt-8 border-t border-neutral-light dark:border-neutral-dark flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-400">
+<p>© 2024 AutoCompare. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="hover:text-primary" href="#">Privacy Policy</a>
+<a class="hover:text-primary" href="#">Terms of Service</a>
+<a class="hover:text-primary" href="#">Cookie Settings</a>
+</div>
+</div>
+</footer>
+</div>
+</div>
+</body></html>
