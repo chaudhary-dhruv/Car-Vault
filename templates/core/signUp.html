@@ -232,8 +232,8 @@
             name="role"
             class="w-full rounded-lg border {% if form.role.errors %}border-red-400{% else %}border-slate-200 dark:border-slate-700{% endif %} bg-white dark:bg-slate-800 px-4 py-3 text-slate-900 dark:text-slate-100 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
           >
-            <option value="user" {% if form.role.value == 'user' or not form.role.value %}selected{% endif %}>User</option>
-            <option value="admin" {% if form.role.value == 'admin' %}selected{% endif %}>Admin</option>
+            <option value="buyer" {% if form.role.value == 'buyer' or not form.role.value %}selected{% endif %}>Buyer</option>
+            <option value="seller" {% if form.role.value == 'seller' %}selected{% endif %}>Seller</option>
           </select>
           {% for error in form.role.errors %}
             <p class="field-error">{{ error }}</p>

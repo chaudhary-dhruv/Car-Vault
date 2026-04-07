@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}CarVault | {{ car.title }}{% endblock %}
+
+{% block content %}
+<main class="px-4 py-8 md:px-8">
+    <div class="mx-auto max-w-7xl">
+        <section class="overflow-hidden rounded-[2rem] bg-white shadow-sm">
+            <div class="grid gap-0 lg:grid-cols-[1.2fr_0.8fr]">
+                <img alt="{{ car.title }}" class="h-full min-h-[320px] w-full object-cover" src="{{ car.display_image }}" onerror="this.onerror=null;this.src='{% static 'images/car-placeholder.svg' %}';">
+                <div class="bg-slate-900 p-8 text-white md:p-10">
+                    <div class="flex flex-wrap items-center gap-3">
+                        <p class="text-xs font-black uppercase tracking-[0.24em] text-primary">{{ car.brand }} {{ car.year }}</p>
+                        <span class="rounded-full bg-white/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.2em]">{{ car.get_listing_status_display }}</span>
+                    </div>
+                    <h1 class="mt-3 text-4xl font-black tracking-tight">{{ car.title }}</h1>
+                    <p class="mt-4 text-lg leading-8 text-slate-300">{{ car.description }}</p>
+                    <div class="mt-8 grid grid-cols-2 gap-4">
+                        <div class="rounded-2xl bg-white/5 p-4">
+                            <p class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Ex-Showroom Price</p>
+                            <p class="mt-2 text-2xl font-black">{{ car.formatted_price_inr }}</p>
+                        </div>
+                        <div class="rounded-2xl bg-white/5 p-4">
+                            <p class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Fuel Type</p>
+                            <p class="mt-2 text-2xl font-black">{{ car.fuel_type }}</p>
+                        </div>
+                    </div>
+                    {% if car.seller %}
+                    <div class="mt-6 rounded-2xl bg-white/5 p-4">
+                        <p class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Listed By</p>
+                        <p class="mt-2 text-lg font-black">{{ car.seller.full_name|default:car.seller.email }}</p>
+                        <p class="text-sm text-slate-300">{{ car.seller.get_role_display }}</p>
+                    </div>
+                    {% endif %}
+                    <form action="{% url 'compare_cars' %}" class="mt-8 grid gap-3" method="get">
+                        <input name="car1" type="hidden" value="{{ car.id }}">
+                        <label class="text-sm font-bold text-slate-300">Compare this car with</label>
+                        <select class="rounded-2xl border-none bg-white px-4 py-4 text-sm text-slate-900 focus:ring-2 focus:ring-primary" name="car2" required>
+                            <option value="">Choose another car</option>
+                            {% for option in compare_options %}
+                            <option value="{{ option.id }}">{{ option.title }}</option>
+                            {% endfor %}
+                        </select>
+                        <button class="rounded-2xl bg-primary px-5 py-4 text-sm font-black text-white" type="submit">Compare Now</button>
+                    </form>
+                    {% if request.user.is_authenticated and request.user.role == "buyer" and car.listing_status == "active" %}
+                    <form action="{% url 'start_conversation' car.slug %}" class="mt-8 grid gap-3" method="post">
+                        {% csrf_token %}
+                        <label class="text-sm font-bold text-slate-300">Message the seller</label>
+                        <input class="rounded-2xl border-none bg-white px-4 py-4 text-sm text-slate-900 focus:ring-2 focus:ring-primary" name="proposed_price" placeholder="Optional offer price in ₹">
+                        <textarea class="rounded-2xl border-none bg-white px-4 py-4 text-sm text-slate-900 focus:ring-2 focus:ring-primary" name="message" rows="3" placeholder="Write your message to the seller"></textarea>
+                        <button class="rounded-2xl border border-white/20 px-5 py-4 text-sm font-black text-white" type="submit">Send Message</button>
+                    </form>
+                    <form action="{% url 'schedule_test_drive' car.slug %}" class="mt-5 grid gap-3" method="post">
+                        {% csrf_token %}
+                        <label class="text-sm font-bold text-slate-300">Schedule a test drive</label>
+                        <input class="rounded-2xl border-none bg-white px-4 py-4 text-sm text-slate-900 focus:ring-2 focus:ring-primary" name="scheduled_for" type="datetime-local" required>
+                        <input class="rounded-2xl border-none bg-white px-4 py-4 text-sm text-slate-900 focus:ring-2 focus:ring-primary" name="location" placeholder="Meeting location" required>
+                        <textarea class="rounded-2xl border-none bg-white px-4 py-4 text-sm text-slate-900 focus:ring-2 focus:ring-primary" name="notes" rows="2" placeholder="Any notes for the seller"></textarea>
+                        <button class="rounded-2xl border border-primary bg-primary px-5 py-4 text-sm font-black text-white" type="submit">Request Test Drive</button>
+                    </form>
+                    {% elif request.user.is_authenticated and request.user.role == "seller" and request.user.id == car.seller_id %}
+                    <a class="mt-8 inline-flex rounded-2xl border border-white/20 px-5 py-4 text-sm font-black text-white" href="{% url 'seller_listing_update' car.slug %}">Manage This Listing</a>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+
+        <section class="mt-8 grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
+            <div class="space-y-8">
+                <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+                    <div class="mb-6">
+                        <p class="text-xs font-black uppercase tracking-[0.24em] text-primary">Specs Overview</p>
+                        <h2 class="mt-2 text-3xl font-black tracking-tight text-slate-900">Everything buyers want to know</h2>
+                    </div>
+                    <div class="grid gap-4 md:grid-cols-2">
+                        <div class="rounded-2xl bg-slate-50 p-5"><p class="text-xs font-black uppercase tracking-[0.2em] text-slate-400">Transmission</p><p class="mt-2 text-lg font-bold">{{ car.transmission }}</p></div>
+                        <div class="rounded-2xl bg-slate-50 p-5"><p class="text-xs font-black uppercase tracking-[0.2em] text-slate-400">Drive Type</p><p class="mt-2 text-lg font-bold">{{ car.drive_type }}</p></div>
+                        <div class="rounded-2xl bg-slate-50 p-5"><p class="text-xs font-black uppercase tracking-[0.2em] text-slate-400">Power</p><p class="mt-2 text-lg font-bold">{{ car.horsepower }} bhp</p></div>
+                        <div class="rounded-2xl bg-slate-50 p-5"><p class="text-xs font-black uppercase tracking-[0.2em] text-slate-400">Torque</p><p class="mt-2 text-lg font-bold">{{ car.torque }} Nm</p></div>
+                        <div class="rounded-2xl bg-slate-50 p-5"><p class="text-xs font-black uppercase tracking-[0.2em] text-slate-400">0-100 km/h</p><p class="mt-2 text-lg font-bold">{{ car.zero_to_hundred }}s</p></div>
+                        <div class="rounded-2xl bg-slate-50 p-5"><p class="text-xs font-black uppercase tracking-[0.2em] text-slate-400">Top Speed</p><p class="mt-2 text-lg font-bold">{{ car.top_speed_kmph }} km/h</p></div>
+                        <div class="rounded-2xl bg-slate-50 p-5"><p class="text-xs font-black uppercase tracking-[0.2em] text-slate-400">Range</p><p class="mt-2 text-lg font-bold">{{ car.range_km }} km</p></div>
+                        <div class="rounded-2xl bg-slate-50 p-5"><p class="text-xs font-black uppercase tracking-[0.2em] text-slate-400">Mileage</p><p class="mt-2 text-lg font-bold">{{ car.mileage_kmpl }} km/l</p></div>
+                        <div class="rounded-2xl bg-slate-50 p-5"><p class="text-xs font-black uppercase tracking-[0.2em] text-slate-400">Cargo Space</p><p class="mt-2 text-lg font-bold">{{ car.cargo_liters }} L</p></div>
+                        <div class="rounded-2xl bg-slate-50 p-5"><p class="text-xs font-black uppercase tracking-[0.2em] text-slate-400">Safety Rating</p><p class="mt-2 text-lg font-bold">{{ car.safety_rating }}/5</p></div>
+                    </div>
+                </div>
+
+                <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+                    <div class="mb-6">
+                        <p class="text-xs font-black uppercase tracking-[0.24em] text-primary">Key Features</p>
+                        <h2 class="mt-2 text-3xl font-black tracking-tight text-slate-900">Highlights that build trust</h2>
+                    </div>
+                    <div class="grid gap-3 md:grid-cols-2">
+                        {% for feature in car.features_list %}
+                        <div class="flex items-start gap-3 rounded-2xl bg-slate-50 p-4">
+                            <svg aria-hidden="true" class="h-6 w-6 shrink-0 text-primary" fill="none" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"></circle>
+                                <path d="M8.5 12.4L10.8 14.7L15.8 9.7" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path>
+                            </svg>
+                            <p class="text-sm font-semibold text-slate-700">{{ feature }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-8">
+                <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100">
+                            <svg aria-hidden="true" class="h-7 w-7 text-primary" fill="none" viewBox="0 0 24 24">
+                                <path d="M9 10V21H5C4.448 21 4 20.552 4 20V11C4 10.448 4.448 10 5 10H9Z" fill="currentColor"></path>
+                                <path d="M10 21V10L13.146 4.502C13.501 3.881 14.22 3.578 14.9 3.769C15.579 3.959 16 4.579 16 5.284V10H19.5C20.88 10 21.832 11.386 21.333 12.673L18.807 19.173C18.509 19.939 17.773 20.444 16.95 20.444H10V21Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-black text-slate-900">Pros & Cons</h3>
+                            <p class="text-xs font-black uppercase tracking-[0.2em] text-slate-400">{{ car.title }}</p>
+                        </div>
+                    </div>
+                    <div class="mt-6 space-y-4">
+                        {% for item in car.pros_list %}
+                        <div class="flex items-start gap-3">
+                            <svg aria-hidden="true" class="mt-0.5 h-5 w-5 shrink-0 text-emerald-500" fill="none" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"></circle>
+                                <path d="M12 8V16" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"></path>
+                                <path d="M8 12H16" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"></path>
+                            </svg>
+                            <p class="text-sm text-slate-700">{{ item }}</p>
+                        </div>
+                        {% endfor %}
+                        {% for item in car.cons_list %}
+                        <div class="flex items-start gap-3 border-t border-slate-100 pt-4">
+                            <svg aria-hidden="true" class="mt-0.5 h-5 w-5 shrink-0 text-rose-500" fill="none" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"></circle>
+                                <path d="M8 12H16" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"></path>
+                            </svg>
+                            <p class="text-sm text-slate-700">{{ item }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+                    <p class="text-xs font-black uppercase tracking-[0.24em] text-primary">Similar Picks</p>
+                    <h3 class="mt-2 text-2xl font-black text-slate-900">Cars you may also compare</h3>
+                    <div class="mt-5 space-y-4">
+                        {% for item in similar_cars %}
+                        <a class="flex items-center gap-4 rounded-2xl bg-slate-50 p-4 transition hover:bg-slate-100" href="{% url 'car_detail' item.slug %}">
+                            <img alt="{{ item.title }}" class="h-20 w-24 rounded-2xl object-cover" src="{{ item.display_image }}" onerror="this.onerror=null;this.src='{% static 'images/car-placeholder.svg' %}';">
+                            <div class="min-w-0">
+                                <p class="truncate text-lg font-black text-slate-900">{{ item.title }}</p>
+                                <p class="text-sm text-slate-500">{{ item.tagline }}</p>
+                            </div>
+                        </a>
+                        {% empty %}
+                        <p class="text-sm text-slate-500">No similar cars available yet.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+{% endblock %}

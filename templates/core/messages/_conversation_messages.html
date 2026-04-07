@@ -1,0 +1,9 @@
+{% for item in conversation.messages.all %}
+<div class="rounded-2xl {% if item.sender_id == request.user.id %}bg-slate-900 text-white{% else %}bg-slate-100 text-slate-900{% endif %} p-4">
+    <p class="text-xs font-black uppercase tracking-[0.2em] {% if item.sender_id == request.user.id %}text-white/60{% else %}text-slate-400{% endif %}">{{ item.sender.full_name|default:item.sender.email }}</p>
+    <p class="mt-2 text-sm leading-7">{{ item.content }}</p>
+    <p class="mt-3 text-[11px] {% if item.sender_id == request.user.id %}text-white/60{% else %}text-slate-400{% endif %}">{{ item.created_at }}</p>
+</div>
+{% empty %}
+<div class="rounded-2xl bg-slate-50 p-4 text-sm text-slate-500">No messages yet.</div>
+{% endfor %}

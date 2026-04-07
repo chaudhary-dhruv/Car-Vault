@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Messages | CarVault{% endblock %}
+
+{% block content %}
+<main class="mx-auto max-w-5xl px-4 py-8 md:px-8">
+    <p class="text-xs font-black uppercase tracking-[0.24em] text-primary">Messages</p>
+    <h1 class="mt-2 text-4xl font-black tracking-tight text-slate-900">Buyer and seller conversations</h1>
+    <div class="mt-8 space-y-4">
+        {% for item in conversations %}
+        <a class="block rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md" href="{% url 'conversation_detail' item.id %}">
+            <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                <div>
+                    <p class="text-xl font-black text-slate-900">{{ item.car.title }}</p>
+                    <p class="mt-1 text-sm text-slate-500">Buyer: {{ item.buyer.email }} | Seller: {{ item.seller.email }}</p>
+                </div>
+                <p class="text-xs font-black uppercase tracking-[0.2em] text-primary">{{ item.get_status_display }}</p>
+            </div>
+        </a>
+        {% empty %}
+        <div class="rounded-3xl border border-dashed border-slate-300 bg-white p-10 text-center text-sm text-slate-500">No conversations found.</div>
+        {% endfor %}
+    </div>
+</main>
+{% endblock %}

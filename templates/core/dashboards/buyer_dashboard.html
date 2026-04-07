@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Buyer Dashboard | CarVault{% endblock %}
+
+{% block content %}
+<main class="mx-auto max-w-7xl px-4 py-8 md:px-8">
+    <div class="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+        <div>
+            <p class="text-xs font-black uppercase tracking-[0.24em] text-primary">Buyer Dashboard</p>
+            <h1 class="mt-2 text-4xl font-black tracking-tight text-slate-900">Track your deals, messages, and test drives.</h1>
+        </div>
+        <a class="rounded-2xl bg-primary px-5 py-3 text-sm font-black text-white" href="{% url 'activity_create' %}">Add Activity</a>
+    </div>
+    <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+        <section class="space-y-8">
+            <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div class="mb-5 flex items-center justify-between">
+                    <h2 class="text-2xl font-black">Open Conversations</h2>
+                    <a class="text-sm font-bold text-primary" href="{% url 'conversation_list' %}">View all</a>
+                </div>
+                <div class="space-y-4">
+                    {% for item in conversations %}
+                    <a class="block rounded-2xl bg-slate-50 p-4 transition hover:bg-slate-100" href="{% url 'conversation_detail' item.id %}">
+                        <p class="text-lg font-black text-slate-900">{{ item.car.title }}</p>
+                        <p class="mt-1 text-sm text-slate-500">Seller: {{ item.seller.full_name|default:item.seller.email }}</p>
+                        <p class="mt-2 text-xs font-bold uppercase tracking-[0.2em] text-primary">{{ item.get_status_display }}</p>
+                    </a>
+                    {% empty %}
+                    <p class="text-sm text-slate-500">No conversations yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+                <h2 class="text-2xl font-black">Upcoming Test Drives</h2>
+                <div class="mt-5 space-y-4">
+                    {% for item in test_drives %}
+                    <div class="rounded-2xl bg-slate-50 p-4">
+                        <p class="text-lg font-black text-slate-900">{{ item.car.title }}</p>
+                        <p class="mt-1 text-sm text-slate-500">{{ item.location }}</p>
+                        <p class="mt-2 text-sm font-semibold text-slate-700">{{ item.scheduled_for }}</p>
+                        <p class="mt-2 text-xs font-bold uppercase tracking-[0.2em] text-primary">{{ item.get_status_display }}</p>
+                    </div>
+                    {% empty %}
+                    <p class="text-sm text-slate-500">No test drives scheduled.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <aside class="space-y-8">
+            <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+                <h2 class="text-2xl font-black">Activity Tracker</h2>
+                <div class="mt-5 space-y-3">
+                    {% for item in activities %}
+                    <div class="rounded-2xl bg-slate-50 p-4">
+                        <p class="text-sm font-black uppercase tracking-[0.2em] text-primary">{{ item.get_activity_type_display }}</p>
+                        <p class="mt-2 text-base font-bold text-slate-900">{{ item.title }}</p>
+                        <p class="mt-1 text-sm text-slate-500">{{ item.description }}</p>
+                    </div>
+                    {% empty %}
+                    <p class="text-sm text-slate-500">No activities added yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+                <h2 class="text-2xl font-black">Cars Ready to Buy</h2>
+                <div class="mt-5 space-y-4">
+                    {% for car in available_cars %}
+                    <a class="flex items-center gap-4 rounded-2xl bg-slate-50 p-4 transition hover:bg-slate-100" href="{% url 'car_detail' car.slug %}">
+                        <img alt="{{ car.title }}" class="h-20 w-24 rounded-2xl object-cover" src="{{ car.display_image }}" onerror="this.onerror=null;this.src='{% static 'images/car-placeholder.svg' %}';">
+                        <div>
+                            <p class="text-lg font-black text-slate-900">{{ car.title }}</p>
+                            <p class="text-sm text-slate-500">{{ car.formatted_price_inr }}</p>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </aside>
+    </div>
+</main>
+{% endblock %}

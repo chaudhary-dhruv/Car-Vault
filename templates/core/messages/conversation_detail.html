@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Conversation | CarVault{% endblock %}
+
+{% block content %}
+<main class="mx-auto max-w-5xl px-4 py-8 md:px-8">
+    <div class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm md:p-8">
+        <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <div>
+                <p class="text-xs font-black uppercase tracking-[0.24em] text-primary">Conversation</p>
+                <h1 class="mt-2 text-4xl font-black tracking-tight text-slate-900">{{ conversation.car.title }}</h1>
+                <p class="mt-2 text-sm text-slate-500">Status: {{ conversation.get_status_display }}</p>
+            </div>
+            {% if request.user.role == "seller" and conversation.status == "open" %}
+            <div class="flex gap-3">
+                <a class="rounded-2xl bg-emerald-500 px-5 py-3 text-sm font-black text-white" href="{% url 'update_conversation_status' conversation.id 'accept' %}">Accept Deal</a>
+                <a class="rounded-2xl border border-slate-300 px-5 py-3 text-sm font-black text-slate-700" href="{% url 'update_conversation_status' conversation.id 'decline' %}">Decline</a>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="mt-8 space-y-4" id="messages-container">
+            {% include "core/messages/_conversation_messages.html" %}
+        </div>
+
+        <form class="mt-8" id="message-form" method="post">
+            {% csrf_token %}
+            <label class="mb-2 block text-sm font-bold text-slate-700">Reply</label>
+            {{ form.content }}
+            <button class="mt-4 rounded-2xl bg-primary px-5 py-3 text-sm font-black text-white" type="submit">Send Message</button>
+        </form>
+    </div>
+</main>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    const messageForm = document.getElementById("message-form");
+    const messageContainer = document.getElementById("messages-container");
+    const fragmentUrl = "{% url 'conversation_messages_fragment' conversation.id %}";
+
+    async function refreshMessages() {
+        const response = await fetch(fragmentUrl, { headers: { "X-Requested-With": "XMLHttpRequest" } });
+        if (!response.ok) return;
+        const data = await response.json();
+        if (data.ok) {
+            messageContainer.innerHTML = data.html;
+        }
+    }
+
+    messageForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const formData = new FormData(messageForm);
+        const response = await fetch(messageForm.action || window.location.href, {
+            method: "POST",
+            body: formData,
+            headers: { "X-Requested-With": "XMLHttpRequest" },
+        });
+        if (response.ok) {
+            messageForm.reset();
+            await refreshMessages();
+        }
+    });
+
+    setInterval(refreshMessages, 4000);
+</script>
+{% endblock %}

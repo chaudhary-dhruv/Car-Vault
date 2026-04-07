@@ -1,22 +1,121 @@
 {% load static %}
-
 <!DOCTYPE html>
-<html lang="en">
+<html class="light" lang="en">
 <head>
-
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>{% block title %}CarVault{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,FILL@0..1&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#e63743",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#211112",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                    },
+                    boxShadow: {
+                        glow: "0 20px 70px rgba(230, 55, 67, 0.18)",
+                    },
+                },
+            },
+        };
+    </script>
+    <style>
+        body { font-family: "Inter", sans-serif; }
+        .material-symbols-outlined {
+            font-family: "Material Symbols Outlined";
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            display: inline-block;
+            white-space: nowrap;
+            direction: ltr;
+            letter-spacing: normal;
+            text-transform: none;
+            -webkit-font-smoothing: antialiased;
+            font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+        }
+    </style>
+    {% block extra_head %}{% endblock %}
 </head>
-<body>
-    {% if request.user.role == "user" %}
-        {% include "navigation/usernavbar.html"  %}
-    {% endif %}
+<body class="bg-background-light text-slate-900">
+    <div class="min-h-screen">
+        <header class="sticky top-0 z-50 border-b border-slate-200/80 bg-white/90 backdrop-blur">
+            <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 md:px-8">
+                <a class="flex items-center gap-3 text-primary" href="{% url 'home' %}">
+                    <img alt="CarVault logo" class="h-11 w-11 rounded-2xl shadow-sm" src="{% static 'images/carvault-logo.svg' %}">
+                    <div>
+                        <span class="block text-xl font-black tracking-tight text-slate-900">CarVault</span>
+                        <span class="block text-[10px] font-bold uppercase tracking-[0.28em] text-slate-400">Trust your next drive</span>
+                    </div>
+                </a>
+                <nav class="hidden items-center gap-6 md:flex">
+                    <a class="text-sm font-semibold text-slate-600 transition hover:text-primary" href="{% url 'home' %}">Home</a>
+                    <a class="text-sm font-semibold text-slate-600 transition hover:text-primary" href="{% url 'car_catalog' %}">Browse Cars</a>
+                    <a class="text-sm font-semibold text-slate-600 transition hover:text-primary" href="{% url 'compare_cars' %}">Compare</a>
+                    {% if request.user.is_authenticated %}
+                    <a class="text-sm font-semibold text-slate-600 transition hover:text-primary" href="{% url 'dashboard' %}">Dashboard</a>
+                    <a class="text-sm font-semibold text-slate-600 transition hover:text-primary" href="{% url 'conversation_list' %}">Messages</a>
+                    {% else %}
+                    <a class="text-sm font-semibold text-slate-600 transition hover:text-primary" href="{% url 'login' %}">Login</a>
+                    {% endif %}
+                </nav>
+                <a class="inline-flex items-center justify-center rounded-xl bg-primary px-5 py-3 text-sm font-bold text-white shadow-glow transition hover:opacity-90" href="{% if request.user.is_authenticated %}{% url 'dashboard' %}{% else %}{% url 'compare_cars' %}{% endif %}">
+                    {% if request.user.is_authenticated %}Open Dashboard{% else %}Start Comparing{% endif %}
+                </a>
+            </div>
+        </header>
 
-    <div class="content">
-        {% block content %}
-        {% endblock %}
+        {% if messages %}
+        <div class="mx-auto mt-4 max-w-5xl space-y-3 px-4 md:px-8">
+            {% for message in messages %}
+            <div class="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+
+        <footer class="mt-20 border-t border-slate-200 bg-white">
+            <div class="mx-auto grid max-w-7xl gap-10 px-4 py-12 md:grid-cols-4 md:px-8">
+                <div class="md:col-span-2">
+                    <div class="mb-4 flex items-center gap-3 text-primary">
+                        <img alt="CarVault logo" class="h-9 w-9 rounded-xl" src="{% static 'images/carvault-logo.svg' %}">
+                        <span class="text-lg font-black text-slate-900">CarVault</span>
+                    </div>
+                    <p class="max-w-xl text-sm leading-7 text-slate-500">
+                        Compare real car data side by side, understand the trade-offs clearly, and choose your next vehicle with confidence.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="mb-4 text-sm font-black uppercase tracking-[0.2em] text-slate-900">Quick Links</h3>
+                    <div class="space-y-3 text-sm text-slate-500">
+                        <a class="block transition hover:text-primary" href="{% url 'home' %}">Home</a>
+                        <a class="block transition hover:text-primary" href="{% url 'car_catalog' %}">Car Catalog</a>
+                        <a class="block transition hover:text-primary" href="{% url 'compare_cars' %}">Compare Cars</a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="mb-4 text-sm font-black uppercase tracking-[0.2em] text-slate-900">Why CarVault</h3>
+                    <div class="space-y-3 text-sm text-slate-500">
+                        <p>Trust-first car comparison</p>
+                        <p>Clear specs and verdicts</p>
+                        <p>Fast evaluation for buyers</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </div>
-    
-
+    {% block extra_scripts %}{% endblock %}
 </body>
 </html>

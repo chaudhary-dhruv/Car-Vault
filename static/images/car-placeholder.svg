@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" fill="none">
+  <rect width="800" height="500" rx="36" fill="#F8FAFC"/>
+  <rect x="40" y="40" width="720" height="420" rx="28" fill="#E2E8F0"/>
+  <path d="M182 300L250 220C270 197 295 185 324 185H484C516 185 545 201 563 228L614 300H182Z" fill="#0F172A"/>
+  <path d="M146 318C146 304 157 293 171 293H629C643 293 654 304 654 318V342C654 356 643 367 629 367H171C157 367 146 356 146 342V318Z" fill="#1E293B"/>
+  <circle cx="255" cy="367" r="52" fill="#0F172A"/>
+  <circle cx="255" cy="367" r="24" fill="#CBD5E1"/>
+  <circle cx="545" cy="367" r="52" fill="#0F172A"/>
+  <circle cx="545" cy="367" r="24" fill="#CBD5E1"/>
+  <path d="M305 205H489C506 205 522 214 533 229L562 269H270L289 228C296 214 309 205 324 205H305Z" fill="#F1F5F9"/>
+  <text x="400" y="120" text-anchor="middle" fill="#E63743" font-size="42" font-family="Arial, sans-serif" font-weight="700">CarVault</text>
+  <text x="400" y="156" text-anchor="middle" fill="#64748B" font-size="20" font-family="Arial, sans-serif">Image unavailable</text>
+</svg>

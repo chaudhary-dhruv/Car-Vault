@@ -1,8 +1,7 @@
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
 from .decorators import role_required
 
 # Create your views here.
-@role_required(allowed_roles=["user"])
+@role_required(allowed_roles=["buyer"])
 def home(request):
-    return render(request , 'user/home.html')
+    return redirect("buyer_dashboard")

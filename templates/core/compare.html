@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}CarVault | Compare Cars{% endblock %}
+
+{% block content %}
+<main class="px-4 py-8 md:px-8">
+    <div class="mx-auto max-w-7xl">
+        <section class="rounded-[2rem] bg-white p-6 shadow-sm md:p-8">
+            <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+                <div>
+                    <p class="text-xs font-black uppercase tracking-[0.24em] text-primary">Model Comparison</p>
+                    <h1 class="mt-2 text-4xl font-black tracking-tight text-slate-900">
+                        {% if left and right %}
+                        {{ left.title }} <span class="font-light text-slate-400">vs</span> {{ right.title }}
+                        {% else %}
+                        Compare any two cars in your collection
+                        {% endif %}
+                    </h1>
+                    <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-500">Select two cars and CarVault will show price, performance, range, dimensions, safety, and a trust-focused buying verdict.</p>
+                </div>
+                <form class="grid gap-3 rounded-3xl bg-background-light p-4 md:min-w-[360px]" method="get">
+                    <select class="rounded-2xl border-slate-200 bg-white px-4 py-3 text-sm focus:border-primary focus:ring-primary" name="car1" required>
+                        <option value="">Choose first car</option>
+                        {% for car in cars %}
+                        <option value="{{ car.id }}" {% if left and car.id == left.id %}selected{% endif %}>{{ car.title }}</option>
+                        {% endfor %}
+                    </select>
+                    <select class="rounded-2xl border-slate-200 bg-white px-4 py-3 text-sm focus:border-primary focus:ring-primary" name="car2" required>
+                        <option value="">Choose second car</option>
+                        {% for car in cars %}
+                        <option value="{{ car.id }}" {% if right and car.id == right.id %}selected{% endif %}>{{ car.title }}</option>
+                        {% endfor %}
+                    </select>
+                    <button class="rounded-2xl bg-primary px-5 py-3 text-sm font-black text-white" type="submit">Compare Now</button>
+                </form>
+            </div>
+        </section>
+
+        {% if left and right %}
+        <section class="mt-8 grid grid-cols-12 overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm">
+            <div class="col-span-12 grid grid-cols-12 border-b border-slate-200 bg-background-light py-5 md:sticky md:top-24">
+                <div class="col-span-4 flex items-center px-6 text-xs font-black uppercase tracking-[0.24em] text-slate-400">Category</div>
+                <div class="col-span-4 border-x border-slate-200 px-6 text-center">
+                    <img alt="{{ left.title }}" class="mx-auto h-24 w-36 rounded-2xl object-cover" src="{{ left.display_image }}" onerror="this.onerror=null;this.src='{% static 'images/car-placeholder.svg' %}';">
+                    <p class="mt-3 text-lg font-black text-slate-900">{{ left.title }}</p>
+                </div>
+                <div class="col-span-4 px-6 text-center">
+                    <img alt="{{ right.title }}" class="mx-auto h-24 w-36 rounded-2xl object-cover" src="{{ right.display_image }}" onerror="this.onerror=null;this.src='{% static 'images/car-placeholder.svg' %}';">
+                    <p class="mt-3 text-lg font-black text-slate-900">{{ right.title }}</p>
+                </div>
+            </div>
+
+            <div class="col-span-12">
+                {% for section in comparison_rows %}
+                <div class="{% if not forloop.last %}border-b border-slate-200{% endif %}">
+                    <div class="flex items-center gap-3 bg-slate-50 px-6 py-4">
+                        <span class="material-symbols-outlined text-primary">{{ section.icon }}</span>
+                        <h2 class="text-sm font-black uppercase tracking-[0.2em] text-slate-900">{{ section.title }}</h2>
+                    </div>
+                    {% for row in section.rows %}
+                    <div class="grid grid-cols-12 items-center px-6 py-4 {% cycle 'bg-white' 'bg-rose-50/30' %}">
+                        <div class="col-span-4 text-sm font-semibold text-slate-500">{{ row.label }}</div>
+                        <div class="col-span-4 text-center text-sm font-bold {% if row.winner == 'left' %}text-emerald-600{% else %}text-slate-900{% endif %}">
+                            {{ row.left }}
+                            {% if row.winner == 'left' %}
+                            <span class="mt-1 inline-block rounded-full bg-emerald-100 px-2 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-700">Winner</span>
+                            {% endif %}
+                        </div>
+                        <div class="col-span-4 text-center text-sm font-bold {% if row.winner == 'right' %}text-emerald-600{% else %}text-slate-900{% endif %}">
+                            {{ row.right }}
+                            {% if row.winner == 'right' %}
+                            <span class="mt-1 inline-block rounded-full bg-emerald-100 px-2 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-700">Winner</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="mt-10 grid gap-8 lg:grid-cols-2">
+            <div class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100">
+                        <svg aria-hidden="true" class="h-7 w-7 text-primary" fill="none" viewBox="0 0 24 24">
+                            <path d="M9 10V21H5C4.448 21 4 20.552 4 20V11C4 10.448 4.448 10 5 10H9Z" fill="currentColor"></path>
+                            <path d="M10 21V10L13.146 4.502C13.501 3.881 14.22 3.578 14.9 3.769C15.579 3.959 16 4.579 16 5.284V10H19.5C20.88 10 21.832 11.386 21.333 12.673L18.807 19.173C18.509 19.939 17.773 20.444 16.95 20.444H10V21Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-black text-xl">Pros &amp; Cons</h3>
+                        <p class="text-xs text-slate-500 uppercase font-bold tracking-widest">{{ left.title }}</p>
+                    </div>
+                </div>
+                <div class="mt-6 space-y-4">
+                    {% for item in left.pros_list %}
+                    <div class="flex items-start gap-2">
+                        <svg aria-hidden="true" class="mt-0.5 h-5 w-5 shrink-0 text-emerald-500" fill="none" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"></circle>
+                            <path d="M12 8V16" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"></path>
+                            <path d="M8 12H16" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"></path>
+                        </svg>
+                        <p class="text-sm text-slate-700">{{ item }}</p>
+                    </div>
+                    {% endfor %}
+                    {% for item in left.cons_list %}
+                    <div class="flex items-start gap-2 border-t border-slate-100 pt-4">
+                        <svg aria-hidden="true" class="mt-0.5 h-5 w-5 shrink-0 text-rose-500" fill="none" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"></circle>
+                            <path d="M8 12H16" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"></path>
+                        </svg>
+                        <p class="text-sm text-slate-700">{{ item }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100">
+                        <svg aria-hidden="true" class="h-7 w-7 text-primary" fill="none" viewBox="0 0 24 24">
+                            <path d="M9 10V21H5C4.448 21 4 20.552 4 20V11C4 10.448 4.448 10 5 10H9Z" fill="currentColor"></path>
+                            <path d="M10 21V10L13.146 4.502C13.501 3.881 14.22 3.578 14.9 3.769C15.579 3.959 16 4.579 16 5.284V10H19.5C20.88 10 21.832 11.386 21.333 12.673L18.807 19.173C18.509 19.939 17.773 20.444 16.95 20.444H10V21Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-black text-xl">Pros &amp; Cons</h3>
+                        <p class="text-xs text-slate-500 uppercase font-bold tracking-widest">{{ right.title }}</p>
+                    </div>
+                </div>
+                <div class="mt-6 space-y-4">
+                    {% for item in right.pros_list %}
+                    <div class="flex items-start gap-2">
+                        <svg aria-hidden="true" class="mt-0.5 h-5 w-5 shrink-0 text-emerald-500" fill="none" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"></circle>
+                            <path d="M12 8V16" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"></path>
+                            <path d="M8 12H16" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"></path>
+                        </svg>
+                        <p class="text-sm text-slate-700">{{ item }}</p>
+                    </div>
+                    {% endfor %}
+                    {% for item in right.cons_list %}
+                    <div class="flex items-start gap-2 border-t border-slate-100 pt-4">
+                        <svg aria-hidden="true" class="mt-0.5 h-5 w-5 shrink-0 text-rose-500" fill="none" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"></circle>
+                            <path d="M8 12H16" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"></path>
+                        </svg>
+                        <p class="text-sm text-slate-700">{{ item }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <section class="mt-10 overflow-hidden rounded-[2rem] bg-gradient-to-br from-primary to-rose-700 p-8 text-white shadow-2xl md:p-12">
+            <div class="grid gap-8 md:grid-cols-[1.4fr_0.6fr] md:items-center">
+                <div>
+                    <p class="inline-flex rounded-full bg-white/15 px-3 py-1 text-xs font-black uppercase tracking-[0.24em] text-white/80">Final Verdict</p>
+                    <h2 class="mt-4 text-4xl font-black tracking-tight">Which one should you buy?</h2>
+                    <p class="mt-4 text-lg leading-8 text-white/85">{{ verdict.summary }}</p>
+                    <div class="mt-6 grid gap-3 sm:grid-cols-2">
+                        <div class="rounded-2xl bg-white/10 p-4">
+                            <p class="text-xs font-black uppercase tracking-[0.2em] text-white/60">{{ left.title }}</p>
+                            <p class="mt-2 text-3xl font-black">{{ verdict.left_score }}</p>
+                            <p class="mt-1 text-sm text-white/70">Category wins</p>
+                        </div>
+                        <div class="rounded-2xl bg-white/10 p-4">
+                            <p class="text-xs font-black uppercase tracking-[0.2em] text-white/60">{{ right.title }}</p>
+                            <p class="mt-2 text-3xl font-black">{{ verdict.right_score }}</p>
+                            <p class="mt-1 text-sm text-white/70">Category wins</p>
+                        </div>
+                    </div>
+                    <div class="mt-6">
+                        <p class="text-sm font-bold text-white/70">Recommended choice</p>
+                        <p class="mt-2 text-3xl font-black">{{ verdict.winner.title }}</p>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <div class="rounded-full bg-white/10 px-8 py-10">
+                        <p class="text-xs font-black uppercase tracking-[0.24em] text-white/60">Aggregate Score</p>
+                        <p class="mt-3 text-6xl font-black">{{ verdict.rating }}</p>
+                        <p class="mt-2 text-sm font-semibold text-white/70">Trust score out of 10</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% else %}
+        <section class="mt-8 rounded-[2rem] border border-dashed border-slate-300 bg-white p-12 text-center shadow-sm">
+            <span class="material-symbols-outlined text-6xl text-primary">compare_arrows</span>
+            <h2 class="mt-4 text-3xl font-black text-slate-900">Choose two cars to see the full comparison</h2>
+            <p class="mx-auto mt-3 max-w-2xl text-sm leading-7 text-slate-500">
+                Pick any two cars from the dropdown above or browse the catalog and add them from the compare tray.
+            </p>
+            <a class="mt-6 inline-flex rounded-2xl bg-primary px-6 py-3 text-sm font-black text-white" href="{% url 'car_catalog' %}">Browse Cars</a>
+        </section>
+        {% endif %}
+    </div>
+</main>
+{% endblock %}
